@@ -19,18 +19,19 @@ class StoreUserService
             mkdir($path, 0777, true);
         $file = $request->file('media');
 
-        if ($file = $request->file('media')) {
-            $fileData = $this->storeFile($file, 'images');
+        // if ($file = $request->file('media')) {
+        //     $fileData = $this->storeFile($file, 'images');
 
-            Media::create([
-                'path' => $fileData['path'],
-                'original_name' =>  $fileData['original_name'],
-                'hash_name' => $fileData['hash_name'],
-                'extension' => $fileData['extension'],
-                'size' => $fileData['size'],
-                'user_id' => $user->id
-            ]);
-        }
+        //     Media::create([
+        //         'path' => $fileData['path'],
+        //         'original_name' =>  $fileData['original_name'],
+        //         'hash_name' => $fileData['hash_name'],
+        //         'extension' => $fileData['extension'],
+        //         'size' => $fileData['size'],
+        //         'user_id' => $user->id
+        //     ]);
+        // } kalo ne service
+        
         return redirect()->route('users.index')
             ->with('message', 'You have successfully created a user');
     }

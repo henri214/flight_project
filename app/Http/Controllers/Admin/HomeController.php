@@ -12,11 +12,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('admin', Auth::user())) {
-            abort(403);
-        } else {
-            $flights = Flight::orderBy('departure_time')->paginate(10);
-            return view('admin.index', compact('flights'));
-        }
+        // if (!Gate::allows('admin', Auth::user())) {
+        //     abort(403);
+        // } else {
+        $flights = Flight::orderBy('departure_time')->paginate(10);
+        return view('admin.index', compact('flights'));
+        // }
     }
 }

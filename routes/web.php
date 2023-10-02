@@ -40,16 +40,17 @@ Route::controller(LoginRegisterController::class)->group(function () {
 });
 Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);
+    Route::get('admin/index', [HomeController::class, 'index'])->name('admin.index');
+    Route::get('bookings/index', [BookingController::class, 'index'])->name('bookings.index');
+    Route::post('/bookings/restore/{booking}', [BookingController::class, 'restore'])->name('bookings.restore');
 });
-Route::get('admin/index', [HomeController::class, 'index'])->name('admin.index')->can('admin', Auth::user());
+
 
 // Flights resource controller
 Route::resource('flights', FlightController::class);
 //Pages resource controller
 Route::resource('pages', PageController::class);
 
-Route::get('bookings/index', [BookingController::class, 'index'])->name('bookings.index')->can('admin', Auth::user());
-Route::post('/bookings/restore/{booking}', [BookingController::class, 'restore'])->name('bookings.restore')->can('admin', Auth::user());
 
 /* paypal Routes */
 Route::controller(PayPalController::class)->group(function () {

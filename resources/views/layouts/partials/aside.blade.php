@@ -3,10 +3,10 @@
         <a href="/" class="brand-link">Dashboard Panel</a>
 
         <div class="sidebar">
-            
+
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    @can('admin', Auth::user())
+                    @can('viewAny', Auth::user())
                         <li class="nav-item ">
                             <a href="{{ route('users.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -16,6 +16,7 @@
                                 </p>
                             </a>
                         </li>
+
                         <li class="nav-item ">
                             <a href="{{ route('pages.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -25,6 +26,8 @@
                                 </p>
                             </a>
                         </li>
+                    @endcan
+                    @can('viewAny', Auth::user())
                         <li class="nav-item">
                             <a href="{{ route('admin.index') }}" class="nav-link">
                                 <p>
@@ -42,6 +45,7 @@
                             </p>
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a href="{{ route('authen.logout') }}" class="nav-link"
                             onclick="event.preventDefault();

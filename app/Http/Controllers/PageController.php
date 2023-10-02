@@ -20,7 +20,7 @@ class PageController extends Controller
     public function store(PageRequest $request)
     {
         Page::create($request->validated());
-        return redirect()->route('admin.pages.index')->with('message', 'Page created');
+        return redirect()->route('pages.index')->with('message', 'Page created');
     }
     public function show(Page $page)
     {
@@ -34,11 +34,11 @@ class PageController extends Controller
     {
         $page->update($request->validated());
         $page->save();
-        return redirect()->route('admin.pages.index')->with('message', 'Page updated');
+        return redirect()->route('pages.index')->with('message', 'Page updated');
     }
-    public function delete(Page $page)
+    public function destroy(Page $page)
     {
         $page->delete();
-        return redirect()->route('admin.pages.index')->with('message', 'Page deleted');
+        return redirect()->route('pages.index')->with('message', 'Page deleted');
     }
 }

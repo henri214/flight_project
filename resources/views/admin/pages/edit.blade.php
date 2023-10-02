@@ -2,8 +2,7 @@
 
 @section('content')
     <x-form.form-header :item="'edit page'">
-        <form class="form-horizontal" action="{{ route('flights.update', $flight) }}" method="POST"
-            enctype="multipart/form-data">
+        <form class="form-horizontal" action="{{ route('pages.update', $page) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
             <div class="card-body">

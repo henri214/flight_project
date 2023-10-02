@@ -19,6 +19,7 @@ class FlightController extends Controller
      */
     public function index()
     {
+        
         $flights = Flight::availability()->orderBy('departure_time')->paginate(10);
         return view('flights.index', compact('flights'));
     }
@@ -37,6 +38,9 @@ class FlightController extends Controller
      */
     public function store(FlightRequest $request)
     {
+        if ($request->user()->cannot('create', 'App\\Models\Flight')) {
+            abort(403);
+        }
         $flight = Flight::create($request->validated());
         return redirect()->route('admin.index')->with('message', 'Flight created');
     }
@@ -45,12 +49,12 @@ class FlightController extends Controller
      */
     public function edit(Flight $flight)
     {
-        if (!Gate::allows('admin', Auth::user())) {
-            abort(403);
-        } else {
-            $airlines = Airline::all();
-            return view('flights.edit', compact(['flight', 'airlines']));
-        }
+        // if (!Gate::allows('admin', Auth::user())) {
+        //     abort(403);
+        // } else {
+        $airlines = Airline::all();
+        return view('flights.edit', compact(['flight', 'airlines']));
+        // }
     }
 
     /**
@@ -58,6 +62,9 @@ class FlightController extends Controller
      */
     public function update(FlightRequest $request, Flight $flight)
     {
+        if ($request->user()->cannot('update', $flight)) {
+            abort(403);
+        }
         $flight->update($request->validated());
         $flight->save();
         return redirect()->route('flights.index')->with('message', 'Flight updated');
