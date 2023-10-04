@@ -40,19 +40,7 @@
                     <td width="150px">{{ $booking->flight->two_way_departure_time }}</td>
                     <td width="150px">{{ $booking->flight->two_way_arrival_time }}</td>
                 @endif
-                @if ($booking->deleted_at !== null)
-                    <td>{{ $booking->deleted_at }}</td>
-                    <td>
-                        <form id="restore-form" action="{{ route('bookings.restore', $booking) }}" method="POST">
-                            @csrf
-                            <button class="btn btn-success" type="submit">Restore</button>
-                        </form>
-
-                    </td>
-                @else
-                    <td>Has not been deleted yet</td>
-                    <td>---</td>
-                @endif
+                <x-form.form-restore :name="'booking'" :item="$booking" />
                 <x-form.form-action :item="'booking'" :value="$booking" />
                 <td>
                     <form action="{{ route('bookings.force-delete', $booking) }}" method="Post">

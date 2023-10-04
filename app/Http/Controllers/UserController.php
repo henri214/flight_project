@@ -7,7 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Media;
 use App\Exports\UsersExport;
-use App\Services\StoreUserService;
+use App\Services\UserService;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -17,45 +17,77 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::whereNull('role_id')->paginate();
-        return view('users.index', compact('users'));
+        try {
+            $users = User::whereNull('role_id')->paginate();
+            return view('users.index', compact('users'));
+        } catch (\Throwable $th) {
+            return back()->withError($th->getMessage())->withInput();
+        }
     }
     public function export()
     {
-        return Excel::download(new UsersExport, 'users.xlsx');
+        try {
+            return Excel::download(new UsersExport, 'users.xlsx');
+        } catch (\Throwable $th) {
+            return back()->withError($th->getMessage())->withInput();
+        }
     }
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        try {
+            return view('users.show', compact('user'));
+        } catch (\Throwable $th) {
+            return back()->withError($th->getMessage())->withInput();
+        }
     }
     public function create()
     {
-        $roles = Role::pluck('name', 'id');
-        $pages = Page::pluck('name', 'id');
-        $genders = collect(['male' => 'Male', 'female' => 'Female']);
-        return view('users.create', compact(['roles', 'pages', 'genders']));
+        try {
+            $roles = Role::pluck('name', 'id');
+            $pages = Page::pluck('name', 'id');
+            $genders = collect(['male' => 'Male', 'female' => 'Female']);
+            return view('users.create', compact(['roles', 'pages', 'genders']));
+        } catch (\Throwable $th) {
+            return back()->withError($th->getMessage())->withInput();
+        }
     }
     public function store(StoreUserRequest $request)
     {
-        $service = new StoreUserService();
-        return $service->storeUser($request);
+        try {
+            $service = new UserService();
+            return $service->storeUser($request);
+        } catch (\Throwable $th) {
+            return back()->withError($th->getMessage())->withInput();
+        }
     }
     public function edit(User $user)
     {
-        $roles = Role::pluck('name', 'id');
-        $pages = Page::pluck('name', 'id');
-        $genders = collect(['male' => 'Male', 'female' => 'Female']);
-        return view('users.edit', compact(['roles', 'pages', 'genders', 'user']));
+        try {
+            $roles = Role::pluck('name', 'id');
+            $pages = Page::pluck('name', 'id');
+            $genders = collect(['male' => 'Male', 'female' => 'Female']);
+            return view('users.edit', compact(['roles', 'pages', 'genders', 'user']));
+        } catch (\Throwable $th) {
+            return back()->withError($th->getMessage())->withInput();
+        }
     }
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user->update($request->validated());
-        return redirect()->route('users.index')
-            ->with('message', 'You have successfully updated your profile');
+        try {
+            $user->update($request->validated());
+            return redirect()->route('users.index')
+                ->with('message', 'You have successfully updated your profile');
+        } catch (\Throwable $th) {
+            return back()->withError($th->getMessage())->withInput();
+        }
     }
     public function destroy(User $user)
     {
-        $user->deleteOrFail();
-        return redirect()->route('users.index')->with('message', 'User deleted');
+        try {
+            $user->deleteOrFail();
+            return redirect()->route('users.index')->with('message', 'User deleted');
+        } catch (\Throwable $th) {
+            return back()->withError($th->getMessage())->withInput();
+        }
     }
 }

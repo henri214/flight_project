@@ -8,7 +8,7 @@ use App\Http\Traits\ImageManager;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreUserRequest;
 
-class StoreUserService
+class UserService
 {
     use ImageManager;
 

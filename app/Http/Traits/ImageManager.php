@@ -3,9 +3,6 @@
 namespace App\Http\Traits;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 trait ImageManager
 {

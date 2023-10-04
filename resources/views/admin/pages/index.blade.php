@@ -8,7 +8,7 @@
         </div>
     @endif
     <x-button.create :item="'page'"></x-button.create>
-    <x-table.table :headers="['#', 'Name', 'All Users', 'All Bookings', 'Action']">
+    <x-table.table :headers="['#', 'Name', 'All Users', 'All Bookings','Deleted At','Restore', 'Action']">
         @forelse ($pages as $page)
             <tr>
                 <td>{{ $loop->iteration }}</td>
@@ -16,7 +16,7 @@
                         href="{{ route('pages.show', $page) }}">{{ Str::limit($page->name, 20) }}</a></td>
                 <td>{{ $page->users->count() }}</td>
                 <td>{{ $page->bookings->count() }}</td>
-
+                <x-form.form-restore :name="'page'" :item="$page" />
                 <x-form.form-action :item="'page'" :value="$page" />
             </tr>
         @empty

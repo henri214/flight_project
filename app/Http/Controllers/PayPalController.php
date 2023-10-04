@@ -22,23 +22,39 @@ class PayPalController extends Controller
 
     public function createTransaction(Flight $flight)
     {
-        return view('transactions.create-transaction', compact('flight'));
+        try {
+            return view('transactions.create-transaction', compact('flight'));
+        } catch (\Throwable $th) {
+            return back()->withError($th->getMessage())->withInput();
+        }
     }
-    
+
     public function processTransaction(Request $request, Flight $flight)
     {
-        return $this->paypalService->processTransaction($request, $flight);
+        try {
+            return $this->paypalService->processTransaction($request, $flight);
+        } catch (\Throwable $th) {
+            return back()->withError($th->getMessage())->withInput();
+        }
     }
 
     public function successTransaction(Request $request, Flight $flight)
     {
-        return $this->paypalService->successTransaction($request, $flight);
+        try {
+            return $this->paypalService->successTransaction($request, $flight);
+        } catch (\Throwable $th) {
+            return back()->withError($th->getMessage())->withInput();
+        }
     }
 
     public function cancelTransaction(Request $request)
     {
-        return redirect()
-            ->route('createTransaction')
-            ->with('error', $this->response['message'] ?? 'You have canceled the transaction.');
+        try {
+            return redirect()
+                ->route('createTransaction')
+                ->with('error', $this->response['message'] ?? 'You have canceled the transaction.');
+        } catch (\Throwable $th) {
+            return back()->withError($th->getMessage())->withInput();
+        }
     }
 }
