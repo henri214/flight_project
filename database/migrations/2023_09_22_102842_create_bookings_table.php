@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('flight_id');
             $table->unsignedBigInteger('page_id');
-            $table->string('user_email');
+            $table->string('user_email')->nullable();
             $table->string('page_name', 128)->nullable();
             $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

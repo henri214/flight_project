@@ -36,15 +36,25 @@
                             </a>
                         </li>
                     @endcan
-                    <li class="nav-item ">
-                        <a href="{{ route('bookings.index') }}" class="nav-link">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                Bookings
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                    </li>
+                        <li class="nav-item ">
+                            <a href="{{ route('bookings.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Bookings
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                        </li>
+                    {{-- @elsecan('viewAny',Auth::user())
+                        <li class="nav-item ">
+                            <a href="{{ route('bookings.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Bookings
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                        </li> --}}
 
                     <li class="nav-item">
                         <a href="{{ route('authen.logout') }}" class="nav-link"

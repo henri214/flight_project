@@ -7,21 +7,11 @@
             @method('PATCH')
             <x-form.form-input :input="'username'" :type="'text'"></x-form.form-input>
             <x-form.form-input :input="'email'" :type="'email'"></x-form.form-input>
-            <x-form.form-input :input="'age'" :type="'number'"></x-form.form-input>
+            <x-form.form-input :input="'birthday'" :type="'number'"></x-form.form-input>
+            <x-form.form-input :input="'media'" :type="'file'"></x-form.form-input>
             <x-form.form-input :input="'phone'" :type="'phone'"></x-form.form-input>
-            <div class="mb-3 row">
-                <label for="gender" class="col-md-4 col-form-label text-md-end text-start">Gender</label>
-                <div class="col-md-6">
-                    <select name="gender" id="gender" class="form-control @error('gender') is-invalid @enderror">
-                        <option value="">Select your gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                    @if ($errors->has('gender'))
-                        <span class="text-danger">{{ $errors->first('gender') }}</span>
-                    @endif
-                </div>
-            </div>
+            <x-form.form-select :input="'page_id'" :description="'Select a page or leave empty'" :items="$pages" />
+            <x-form.form-select :input="'gender'" :description="'Select a gender or leave empty'" :items="$genders" />
             <div class="mb-3 row">
                 <input type="submit" class="col-md-3 offset-md-5 btn btn-primary" value="Update">
             </div>

@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Storage;
 
 trait ImageManager
 {
-    public function storeFile(UploadedFile $image, $path, string $disk = 'public')
+    public function storeFile(UploadedFile $image, $path)
     {
         if ($image) {
-            $path2 = $image->store($path, ['disk' => 'public']);
+            $path2 = $image->store($path);
 
             return $image = [
                 'original_name' => pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME),

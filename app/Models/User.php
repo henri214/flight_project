@@ -67,6 +67,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(Media::class);
     }
+    
     public function page()
     {
         return $this->belongsTo(Page::class);
@@ -85,6 +86,6 @@ class User extends Authenticatable
     }
     public function files()
     {
-        return $this->hasMany(Media::class);
+        return $this->hasMany(File::class);
     }
 }

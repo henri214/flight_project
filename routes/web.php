@@ -39,10 +39,13 @@ Route::controller(LoginRegisterController::class)->group(function () {
     Route::get('dashboard', 'dashboard')->name('authen.dashboard');
 });
 Route::middleware(['auth'])->group(function () {
+    //Bookings resource controller
+    Route::resource('bookings', BookingController::class);
     Route::resource('users', UserController::class);
     Route::get('admin/index', [HomeController::class, 'index'])->name('admin.index');
-    Route::get('bookings/index', [BookingController::class, 'index'])->name('bookings.index');
     Route::post('/bookings/restore/{booking}', [BookingController::class, 'restore'])->name('bookings.restore');
+    Route::delete('/bookings/force-delete/{booking}', [BookingController::class, 'forceDelete'])->name('bookings.force-delete');
+
 });
 
 
@@ -52,6 +55,7 @@ Route::resource('flights', FlightController::class);
 Route::resource('pages', PageController::class);
 
 
+
 /* paypal Routes */
 Route::controller(PayPalController::class)->group(function () {
     Route::get('createTransaction/{flight}', 'createTransaction')->name('createTransaction');
@@ -59,3 +63,4 @@ Route::controller(PayPalController::class)->group(function () {
     Route::get('success-transaction/{flight}', 'successTransaction')->name('successTransaction');
     Route::get('cancel-transaction', 'cancelTransaction')->name('cancelTransaction');
 });
+Route::get('export/users', [UserController::class, 'export'])->name('users.export');

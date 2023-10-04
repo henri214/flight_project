@@ -7,6 +7,7 @@
             {{ session()->get('message') }}
         </div>
     @endif
+    <x-button.create :item="'booking'"></x-button.create>
     <x-table.table :headers="[
         '#',
         'Flight Name',
@@ -18,6 +19,8 @@
         'Second Arrival Time ',
         'Deleted At',
         'Restore',
+        'Action',
+        'Delete permanently',
     ]">
         @forelse ($bookings as $booking)
             <tr>
@@ -50,8 +53,14 @@
                     <td>Has not been deleted yet</td>
                     <td>---</td>
                 @endif
-
-
+                <x-form.form-action :item="'booking'" :value="$booking" />
+                <td>
+                    <form action="{{ route('bookings.force-delete', $booking) }}" method="Post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-info">Delete Permanently</button>
+                    </form>
+                </td>
             </tr>
         @empty
             <tr>
@@ -60,4 +69,5 @@
             </tr>
         @endforelse
     </x-table.table>
+    {{ $bookings->links() }}
 @endsection

@@ -19,7 +19,7 @@ class FlightController extends Controller
      */
     public function index()
     {
-        
+
         $flights = Flight::availability()->orderBy('departure_time')->paginate(10);
         return view('flights.index', compact('flights'));
     }
@@ -29,8 +29,10 @@ class FlightController extends Controller
      */
     public function create()
     {
-        $airlines = Airline::all();
-        return view('flights.create', compact('airlines'));
+        $airlines = Airline::query()->pluck('name', 'id');
+        $availability = collect([1 => 'Yes', 0 => 'No']);
+        $two_way = collect([1 => 'Yes', 0 => 'No']);
+        return view('flights.create', compact(['airlines', 'availability', 'two_way']));
     }
 
     /**
@@ -49,11 +51,10 @@ class FlightController extends Controller
      */
     public function edit(Flight $flight)
     {
-        // if (!Gate::allows('admin', Auth::user())) {
-        //     abort(403);
-        // } else {
-        $airlines = Airline::all();
-        return view('flights.edit', compact(['flight', 'airlines']));
+        $airlines = Airline::query()->pluck('name', 'id');
+        $availability = collect([1 => 'Yes', 0 => 'No']);
+        $two_way = collect([1 => 'Yes', 0 => 'No']);
+        return view('flights.edit', compact(['flight', 'airlines', 'availability', 'two_way']));
         // }
     }
 
@@ -66,7 +67,6 @@ class FlightController extends Controller
             abort(403);
         }
         $flight->update($request->validated());
-        $flight->save();
         return redirect()->route('flights.index')->with('message', 'Flight updated');
     }
 
@@ -75,11 +75,10 @@ class FlightController extends Controller
      */
     public function destroy(Flight $flight)
     {
-        if (!Gate::allows('admin', Auth::user())) {
+        if (auth()->user()->cannot('delete', $flight)) {
             abort(403);
-        } else {
-            $flight->deleteOrFail();
-            return redirect()->route('flights.index')->with('message', 'Flight deleted');
         }
+        $flight->deleteOrFail();
+        return redirect()->route('flights.index')->with('message', 'Flight deleted');
     }
 }

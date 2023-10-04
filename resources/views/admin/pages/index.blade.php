@@ -7,6 +7,7 @@
             {{ session()->get('message') }}
         </div>
     @endif
+    <x-button.create :item="'page'"></x-button.create>
     <x-table.table :headers="['#', 'Name', 'All Users', 'All Bookings', 'Action']">
         @forelse ($pages as $page)
             <tr>
@@ -15,14 +16,7 @@
                         href="{{ route('pages.show', $page) }}">{{ Str::limit($page->name, 20) }}</a></td>
                 <td>{{ $page->users->count() }}</td>
                 <td>{{ $page->bookings->count() }}</td>
-                {{-- <td>
-                    <form action="{{ route('pages.destroy', $page) }}" method="Post">
-                        <a class="btn btn-primary" href="{{ route('pages.edit', $page) }}">Edit</a>
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </td> --}}
+
                 <x-form.form-action :item="'page'" :value="$page" />
             </tr>
         @empty

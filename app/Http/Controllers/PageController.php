@@ -33,7 +33,6 @@ class PageController extends Controller
     public function update(Page $page, PageRequest $request)
     {
         $page->update($request->validated());
-        $page->save();
         return redirect()->route('pages.index')->with('message', 'Page updated');
     }
     public function destroy(Page $page)

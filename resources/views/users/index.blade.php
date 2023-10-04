@@ -7,6 +7,14 @@
         </div>
     @endif
     <x-button.create :item="'user'"></x-button.create>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right gap-3">
+            <br>
+            <li class="breadcrumb-item "><a href="{{ route('users.export') }}"><button type="button"
+                        class="btn btn-block btn-primary">Export</button></a>
+            </li>
+        </ol>
+    </div>
     {{-- admin user table --}}
     <x-table.table :headers="['#', 'Username', 'Email', 'Role Name', 'Phone', 'Age', 'Gender', 'Action']">
         @forelse ($users as $user)

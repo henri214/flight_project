@@ -15,7 +15,7 @@ class Booking extends Model
         'user_id',
         'flight_id',
         'user_email',
-        'page_name',
+        'page_id',
     ];
 
     public function user()

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BookingRequest extends FormRequest
@@ -24,8 +25,7 @@ class BookingRequest extends FormRequest
         return [
             'user_id' => 'required|exists:users,id',
             'flight_id' => 'required|exists:flights,id',
-            'user_email' => 'required|string|exists:users,email',
-            'page_name' => 'required|string|exists:pages,name',
+            'page_id' => 'required|exists:pages,id',
         ];
     }
 }

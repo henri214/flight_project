@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Traits\ImageManager;
+use App\Models\Page;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Media;
+use App\Exports\UsersExport;
 use App\Services\StoreUserService;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Models\Page;
 
 class UserController extends Controller
 {
@@ -19,15 +20,18 @@ class UserController extends Controller
         $users = User::whereNull('role_id')->paginate();
         return view('users.index', compact('users'));
     }
-
+    public function export()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
+    }
     public function show(User $user)
     {
         return view('users.show', compact('user'));
     }
     public function create()
     {
-        $roles = Role::query()->pluck('name', 'id');
-        $pages = Page::query()->pluck('name', 'id');
+        $roles = Role::pluck('name', 'id');
+        $pages = Page::pluck('name', 'id');
         $genders = collect(['male' => 'Male', 'female' => 'Female']);
         return view('users.create', compact(['roles', 'pages', 'genders']));
     }
@@ -38,7 +42,10 @@ class UserController extends Controller
     }
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        $roles = Role::pluck('name', 'id');
+        $pages = Page::pluck('name', 'id');
+        $genders = collect(['male' => 'Male', 'female' => 'Female']);
+        return view('users.edit', compact(['roles', 'pages', 'genders', 'user']));
     }
     public function update(UpdateUserRequest $request, User $user)
     {

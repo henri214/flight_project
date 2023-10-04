@@ -26,7 +26,7 @@ class StoreUserRequest extends FormRequest
             'username' => 'required|string|max:250',
             'email' => 'required|email|max:250|unique:users',
             'password' => 'required|min:8|confirmed',
-            'media' => 'required|file|mimes:png,jpg,svg,jpeg|max:2048',
+            'media' => 'file|mimes:png,jpg,svg,jpeg|max:2048',
             'birthday' => 'required|date',
             'gender' => 'required|string',
             'phone' => 'required||string|starts_with:+',

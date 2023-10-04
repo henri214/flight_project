@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Services\StoreUserService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\StoreUserRequest;
 
 class LoginRegisterController extends Controller
 {
@@ -18,12 +19,15 @@ class LoginRegisterController extends Controller
     }
     public function register()
     {
-        return view('authen.register');
+        $genders = collect(['male' => 'Male', 'female' => 'Female']);
+        return view('authen.register', compact('genders'));
     }
 
     public function store(StoreUserRequest $request)
     {
-        User::create($request->validated());
+
+        $service = new StoreUserService();
+        $service->storeUser($request);
         $credentials = $request->only('email', 'password');
         Auth::attempt($credentials);
         return redirect()->to('/')
