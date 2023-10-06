@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Utilities\FilterBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Flight extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'name',
         'airline_id',
@@ -21,10 +22,7 @@ class Flight extends Model
         'two_way',
         'is_available'
     ];
-    // public function scopeOrderBy($query)
-    // {
-    //     return $query->orderBy('departure_time');
-    // }
+    protected $dates = ['deleted_at'];
     public function scopeAvailability($query)
     {
         return $query->where('is_available', true);

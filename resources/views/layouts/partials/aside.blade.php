@@ -1,5 +1,5 @@
 @auth
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <aside class="main-sidebar sidebar-dark-primary elevation-4 h-25" style="position: fixed;">
         <a href="/" class="brand-link">Dashboard Panel</a>
 
         <div class="sidebar">

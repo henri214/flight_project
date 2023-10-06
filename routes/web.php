@@ -42,9 +42,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);
     Route::get('admin/index', [HomeController::class, 'index'])->name('admin.index');
     Route::post('/bookings/restore/{booking}', [BookingController::class, 'restore'])->name('bookings.restore');
-    Route::post('/pages/restore/{page}', [PageController::class, 'restore'])->name('pages.restore');
-    Route::post('/airlines/restore/{airline}', [AirlineController::class, 'restore'])->name('airlines.restore');
     Route::delete('/bookings/force-delete/{booking}', [BookingController::class, 'forceDelete'])->name('bookings.force-delete');
+    Route::post('/pages/restore/{page}', [PageController::class, 'restore'])->name('pages.restore');
+    Route::post('/users/restore/{user}', [UserController::class, 'restore'])->name('users.restore');
+    Route::post('/flights/restore/{flight}', [HomeController::class, 'restore'])->name('flights.restore');
+    Route::post('/airlines/restore/{airline}', [AirlineController::class, 'restore'])->name('airlines.restore');
     Route::resource('airlines', AirlineController::class);
 });
 

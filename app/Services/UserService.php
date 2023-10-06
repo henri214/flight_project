@@ -27,6 +27,6 @@ class UserService
             }
         });
         return redirect()->route('users.index')
-            ->with('message', 'You have successfully created a user');
+            ->with('success', 'You have successfully created a user');
     }
 }

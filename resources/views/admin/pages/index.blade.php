@@ -2,29 +2,58 @@
 
 @section('content')
     {{-- Page table  --}}
-    @if (session()->has('message'))
-        <div class="alert alert-success">
-            {{ session()->get('message') }}
-        </div>
-    @endif
     <x-button.create :item="'page'"></x-button.create>
-    <x-table.table :headers="['#', 'Name', 'All Users', 'All Bookings','Deleted At','Restore', 'Action']">
-        @forelse ($pages as $page)
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td><a class="link-underline link-underline-opacity-0"
-                        href="{{ route('pages.show', $page) }}">{{ Str::limit($page->name, 20) }}</a></td>
-                <td>{{ $page->users->count() }}</td>
-                <td>{{ $page->bookings->count() }}</td>
-                <x-form.form-restore :name="'page'" :item="$page" />
-                <x-form.form-action :item="'page'" :value="$page" />
-            </tr>
-        @empty
-            <tr>
-                <td>1</td>
-                <td>There are no pages at the moment</td>
-            </tr>
-        @endforelse
-    </x-table.table>
-    {{ $pages->links() }}
+    <div class="container mt-5">
+        <h2 class="mb-4">Pages</h2>
+        <table id="myTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Page Name</th>
+                    <th>Users</th>
+                    <th>Bookings</th>
+                    <th>Deleted at</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    @push('scripts')
+        <script type="text/javascript">
+            $(function() {
+                var table = $('#myTable').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: "{{ route('pages.index') }}",
+                    columns: [{
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex'
+                        },
+                        {
+                            data: 'name',
+                            name: 'name'
+                        },
+                        {
+                            data: 'allUsers',
+                            name: 'allUsers'
+                        },
+                        {
+                            data: 'bookings',
+                            name: 'bookings'
+                        },
+                        {
+                            data: 'deleted_at',
+                            name: 'deleted_at'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action'
+                        },
+                    ]
+                });
+            });
+        </script>
+    @endpush
 @endsection

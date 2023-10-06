@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PageRequest;
 use App\Models\Page;
 use Illuminate\Http\Request;
+use App\Services\PageService;
+use App\Http\Requests\PageRequest;
 
 class PageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $pages = Page::withTrashed()->paginate(10);
-            return view('admin.pages.index', compact('pages'));
+            $service = new PageService();
+            return $service->getAll($request);
         } catch (\Throwable $th) {
             return back()->withError($th->getMessage())->withInput();
         }
@@ -29,7 +30,7 @@ class PageController extends Controller
     {
         try {
             Page::create($request->validated());
-            return redirect()->route('pages.index')->with('message', 'Page created');
+            return redirect()->route('pages.index')->with('success', 'Page created');
         } catch (\Throwable $th) {
             return back()->withError($th->getMessage())->withInput();
         }
@@ -54,7 +55,7 @@ class PageController extends Controller
     {
         try {
             $page->update($request->validated());
-            return redirect()->route('pages.index')->with('message', 'Page updated');
+            return redirect()->route('pages.index')->with('success', 'Page updated');
         } catch (\Throwable $th) {
             return back()->withError($th->getMessage())->withInput();
         }
@@ -63,16 +64,17 @@ class PageController extends Controller
     {
         try {
             $page->delete();
-            return redirect()->route('pages.index')->with('message', 'Page deleted');
+            return redirect()->route('pages.index')->with('success', 'Page deleted');
         } catch (\Throwable $th) {
             return back()->withError($th->getMessage())->withInput();
         }
     }
+
     public function restore($page)
     {
         try {
             Page::withTrashed()->findOrFail($page)->restore();
-            return redirect()->back()->with('message', 'Page restored');
+            return redirect()->back()->with('success', 'Page restored');
         } catch (\Throwable $th) {
             return back()->withError($th->getMessage())->withInput();
         }

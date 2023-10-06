@@ -8,6 +8,7 @@ use App\Services\StoreUserService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreUserRequest;
+use App\Services\UserService;
 
 class LoginRegisterController extends Controller
 {
@@ -26,7 +27,7 @@ class LoginRegisterController extends Controller
     public function store(StoreUserRequest $request)
     {
 
-        $service = new StoreUserService();
+        $service = new UserService();
         $service->storeUser($request);
         $credentials = $request->only('email', 'password');
         Auth::attempt($credentials);

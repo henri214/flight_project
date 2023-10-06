@@ -22,6 +22,7 @@ return new class extends Migration
             $table->datetime('two_way_arrival_time')->nullable();
             $table->float('price');
             $table->float('pasangers');
+            $table->softDeletes();
             $table->boolean('is_available')->default(false);
             $table->boolean('two_way')->default(false);
             $table->timestamps();

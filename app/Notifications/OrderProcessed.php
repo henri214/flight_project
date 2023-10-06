@@ -16,10 +16,12 @@ class OrderProcessed extends Notification
      */
     protected $item;
     protected $user;
-    public function __construct($item, $user)
+    protected $booking;
+    public function __construct($item, $user,$booking)
     {
         $this->item = $item;
         $this->user = $user;
+        $this->booking = $booking;
     }
 
     /**
@@ -41,6 +43,7 @@ class OrderProcessed extends Notification
             ->greeting('Greetings ' . ucwords($this->user->username) . ' !!')
             ->line('Your flight to ' . $this->item->name . ' was succesfully booked .')
             ->line('The price is ' . $this->item->price . ' was succesfully booked .')
+            ->attach($this->booking->file->path)
             ->line('Thank you for using our application!');
     }
 

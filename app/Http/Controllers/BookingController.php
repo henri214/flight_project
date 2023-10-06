@@ -7,32 +7,26 @@ use App\Models\Page;
 use App\Models\User;
 use App\Models\Flight;
 use App\Models\Booking;
+use App\Services\BookingDataService;
+use Illuminate\Http\Request;
+use App\Services\BookingService;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\BookingRequest;
-use App\Services\BookingService;
-use Illuminate\Database\Eloquent\Builder;
 
 class BookingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        try {
-            $this->authorize('viewAny', Booking::class);
-            $bookings = Booking::when(auth()->user()->role_id !== 1, function (Builder $query) {
-                $query->where('user_id', auth()->user()->id);
-            })->withTrashed()->paginate();
-            return view('bookings.index', compact('bookings'));
-        } catch (\Throwable $th) {
-            return back()->withError($th->getMessage())->withInput();
-        }
+        $service = new BookingDataService();
+        return $service->getAll($request);
     }
     public function restore($booking)
     {
         try {
             Booking::withTrashed()->findOrFail($booking)->restore();
-            return redirect()->back()->with('message', 'Booking restored');
+            return redirect()->back()->with('success', 'Booking restored');
         } catch (\Throwable $th) {
-            return back()->withError($th->getMessage())->withInput();
+            return back()->with('error', 'Data inserted incorrectly');
         }
     }
     public function create()
@@ -43,7 +37,7 @@ class BookingController extends Controller
             $users = User::pluck('username', 'id');
             return view('bookings.create', compact(['flights', 'pages', 'users']));
         } catch (\Throwable $th) {
-            return back()->withError($th->getMessage())->withInput();
+            return back()->with('error', 'Data inserted incorrectly');
         }
     }
     /**
@@ -55,7 +49,7 @@ class BookingController extends Controller
             $service = new BookingService();
             return $service->storeBooking($request);
         } catch (\Throwable $th) {
-            return back()->withError($th->getMessage())->withInput();
+            return back()->with('error', 'Data inserted incorrectly');
         }
     }
     /**
@@ -66,7 +60,7 @@ class BookingController extends Controller
         try {
             return view('bookings.show', compact('Booking'));
         } catch (\Throwable $th) {
-            return back()->withError($th->getMessage())->withInput();
+            return back()->with('error', 'Booking was not found ');
         }
     }
     /**
@@ -80,7 +74,7 @@ class BookingController extends Controller
             $users = User::pluck('username', 'id');
             return view('bookings.edit', compact(['flights', 'pages', 'users', 'booking']));
         } catch (\Throwable $th) {
-            return back()->withError($th->getMessage())->withInput();
+            return back()->with('error', 'Data inserted incorrectly');
         }
     }
     /**
@@ -90,9 +84,9 @@ class BookingController extends Controller
     {
         try {
             Booking::withTrashed()->findOrFail($booking)->restore();
-            return redirect()->back()->with('message', 'Booking restored');
+            return redirect()->back()->with('success', 'Booking updated');
         } catch (\Throwable $th) {
-            return back()->withError($th->getMessage())->withInput();
+            return back()->with('error', 'Data inserted incorrectly');
         }
     }
     /**
@@ -105,7 +99,7 @@ class BookingController extends Controller
                 abort(403);
             } else {
                 $booking->delete();
-                return redirect()->route('bookings.index')->with('message', 'Booking deleted');
+                return redirect()->route('bookings.index')->with('success', 'Booking deleted');
             }
         } catch (\Throwable $th) {
             return back()->withError($th->getMessage())->withInput();
@@ -118,7 +112,7 @@ class BookingController extends Controller
                 abort(403);
             } else {
                 $booking->forceDelete();
-                return redirect()->route('bookings.index')->with('message', 'Booking deleted permanently');
+                return redirect()->route('bookings.index')->with('success', 'Booking deleted permanently');
             }
         } catch (\Throwable $th) {
             return back()->withError($th->getMessage())->withInput();

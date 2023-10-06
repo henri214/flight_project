@@ -54,13 +54,15 @@ class PaypalService
         $provider->getAccessToken();
         $response = $provider->capturePaymentOrder($request['token']);
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-            $user->notify(new OrderProcessed($flight, $user));
             $booking = new Booking();
-            $booking->user_id = auth()->user()->id;
+            $booking->user_id = $user->id;
+            $booking->user_email = $user->email;
             $booking->flight_id = $flight->id;
+            $booking->page_id = $user->page_id;
             $booking->save();
+            $user->notify(new OrderProcessed($flight, $booking, $user));
             return redirect()
-                ->route('flights.index')
+                ->route('bookings.index')
                 ->with('success', 'Transaction complete.');
         } else {
             return redirect()

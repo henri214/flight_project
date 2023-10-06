@@ -3,56 +3,83 @@
 @section('content')
     {{-- admin welcome page --}}
     <x-button.create :item="'flight'"></x-button.create>
-    @if (session()->has('message'))
-        <div class="alert alert-success">
-            {{ session()->get('message') }}
-        </div>
-    @endif
-    <x-table.table :headers="[
-        '#',
-        'Name',
-        'Airline',
-        'Departure Time',
-        'Arrival Time',
-        'Price in $',
-        'Pasangers',
-        'Second Departure Time',
-        'Second Arrival Time ',
-        'Two-way Flight',
-        'Is Available',
-        'Action',
-    ]">
-        @forelse ($flights as $flight)
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td><a class="link-underline link-underline-opacity-0"
-                        href="{{ route('flights.show', $flight) }}">{{ Str::limit($flight->name, 20) }}</a></td>
-                <td>{{ Str::limit($flight->airline->name, 20) }}</td>
-                <td width="150px">{{ $flight->departure_time }}</td>
-                <td width="150px">{{ $flight->arrival_time }}</td>
-                <td>{{ $flight->price }}</td>
-                <td>{{ $flight->pasangers }}</td>
-                <td width="150px">{{ $flight->two_way_departure_time }}</td>
-                <td width="150px">{{ $flight->two_way_arrival_time }}</td>
-                @if ($flight->two_way === 0)
-                    <td>False</td>
-                @else
-                    <td>True</td>
-                @endif
-                @if ($flight->is_available === 0)
-                    <td>False</td>
-                @else
-                    <td>True</td>
-                @endif
-                </td>
-                <x-form.form-action :item="'flight'" :value="$flight" />
-            </tr>
-        @empty
-            <tr>
-                <td>1</td>
-                <td>There are no flights at the moment</td>
-            </tr>
-        @endforelse
-    </x-table.table>
-    {{ $flights->links() }}
+    <div class="container mt-5">
+        <h2 class="mb-4">Flights</h2>
+        <table id="myFlightsTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Departure Time</th>
+                    <th>Arrival Time</th>
+                    <th>Price</th>
+                    <th>Pasangers</th>
+                    <th>Two-way Flight</th>
+                    <th>Second Departure Time</th>
+                    <th>Second Arrival Time</th>
+                    <th>Deleted at</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    @push('scripts')
+        <script type="text/javascript">
+            $(function() {
+                var table = $('#myFlightsTable').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: "{{ route('admin.index') }}",
+                    columns: [{
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex'
+                        },
+                        {
+                            data: 'name',
+                            name: 'name'
+                        },
+                        {
+                            data: 'departure_time',
+                            name: 'departure_time'
+                        },
+                        {
+                            data: 'arrival_time',
+                            name: 'arrival_time'
+                        },
+                        {
+                            data: 'price',
+                            name: 'price'
+                        },
+                        {
+                            data: 'pasangers',
+                            name: 'pasangers'
+                        },
+                        {
+                            data: 'twoWay',
+                            name: 'twoWay'
+                        },
+                        {
+                            data: 'secondDepartureTime',
+                            name: 'secondDepartureTime'
+                        },
+                        {
+                            data: 'secondArrivalTime',
+                            name: 'secondArrivalTime'
+                        },
+                        {
+                            data: 'deleted_at',
+                            name: 'deleted_at'
+                        },
+
+                        {
+                            data: 'action',
+                            name: 'action'
+                        },
+                    ]
+                });
+            });
+        </script>
+    @endpush
 @endsection

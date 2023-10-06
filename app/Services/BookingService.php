@@ -17,6 +17,6 @@ class BookingService
             $service = new FileService($booking);
             $service->create($booking);
         });
-        return redirect()->route('bookings.index')->with('message', 'Booking created');
+        return redirect()->route('bookings.index')->with('success', 'Booking created');
     }
 }

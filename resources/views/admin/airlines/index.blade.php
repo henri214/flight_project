@@ -2,28 +2,53 @@
 
 @section('content')
     {{-- airline table  --}}
-    @if (session()->has('message'))
-        <div class="alert alert-success">
-            {{ session()->get('message') }}
-        </div>
-    @endif
     <x-button.create :item="'airlines'"></x-button.create>
-    <x-table.table :headers="['#', 'Airline Name', 'All Flights', 'Deleted At', 'Restore', 'Action']">
-        @forelse ($airlines as $airline)
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td><a class="link-underline link-underline-opacity-0"
-                        href="{{ route('airlines.show', $airline) }}">{{ Str::limit($airline->name, 20) }}</a></td>
-                <td>{{ $airline->flights->count() }}</td>
-                <x-form.form-restore :name="'airline'" :item="$airline" />
-                <x-form.form-action :item="'airline'" :value="$airline" />
-            </tr>
-        @empty
-            <tr>
-                <td>1</td>
-                <td>There are no airlines at the moment</td>
-            </tr>
-        @endforelse
-    </x-table.table>
-    {{ $airlines->links() }}
+    <div class="container mt-5">
+        <h2 class="mb-4">Airlines</h2>
+        <table id="myTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Airline Name</th>
+                    <th>All Flights</th>
+                    <th>Deleted At</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    @push('scripts')
+        <script type="text/javascript">
+            $(function() {
+                var table = $('#myTable').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: "{{ route('airlines.index') }}",
+                    columns: [{
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex'
+                        },
+                        {
+                            data: 'name',
+                            name: 'name'
+                        },
+                        {
+                            data: 'flightsNr',
+                            name: 'flightsNr'
+                        },
+                        {
+                            data: 'deleted_at',
+                            name: 'deleted_at'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action'
+                        },
+                    ]
+                });
+            });
+        </script>
+    @endpush
 @endsection

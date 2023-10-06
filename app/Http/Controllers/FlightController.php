@@ -2,30 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Booking;
 use App\Models\Flight;
 use App\Models\Airline;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FlightRequest;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
-use App\Notifications\OrderProcessed;
+use App\Services\FlightsDataService;
+use Yajra\DataTables\Facades\DataTables;
 
 class FlightController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-
-        try {
-            $flights = Flight::availability()->orderBy('departure_time')->paginate(10);
-            return view('flights.index', compact('flights'));
-        } catch (\Throwable $th) {
-            return back()->withError($th->getMessage())->withInput();
-        }
+        $service = new FlightsDataService();
+        return $service->getAll($request);
     }
 
     /**
@@ -36,10 +30,10 @@ class FlightController extends Controller
         try {
             $airlines = Airline::query()->pluck('name', 'id');
             $availability = collect([1 => 'Yes', 0 => 'No']);
-            $two_way = collect([1 => 'Yes', 0 => 'No']);
-            return view('flights.create', compact(['airlines', 'availability', 'two_way']));
+            $twoWay = collect([1 => 'Yes', 0 => 'No']);
+            return view('flights.create', compact(['airlines', 'availability', 'twoWay']));
         } catch (\Throwable $th) {
-            return back()->withError($th->getMessage())->withInput();
+            return back()->with('error', 'Data inserted incorrectly');
         }
     }
 
@@ -52,10 +46,10 @@ class FlightController extends Controller
             if ($request->user()->cannot('create', 'App\\Models\Flight')) {
                 abort(403);
             }
-            $flight = Flight::create($request->validated());
-            return redirect()->route('admin.index')->with('message', 'Flight created');
+            Flight::create($request->validated());
+            return redirect()->route('admin.index')->with('success', 'Flight created');
         } catch (\Throwable $th) {
-            return back()->withError($th->getMessage())->withInput();
+            return back()->with('error', 'Data inserted incorrectly');
         }
     }
     /**
@@ -66,10 +60,10 @@ class FlightController extends Controller
         try {
             $airlines = Airline::query()->pluck('name', 'id');
             $availability = collect([1 => 'Yes', 0 => 'No']);
-            $two_way = collect([1 => 'Yes', 0 => 'No']);
-            return view('flights.edit', compact(['flight', 'airlines', 'availability', 'two_way']));
+            $twoWay = collect([1 => 'Yes', 0 => 'No']);
+            return view('flights.edit', compact(['flight', 'airlines', 'availability', 'twoWay']));
         } catch (\Throwable $th) {
-            return back()->withError($th->getMessage())->withInput();
+            return back()->with('error', 'Flight was not found');
         }
     }
 
@@ -83,9 +77,9 @@ class FlightController extends Controller
                 abort(403);
             }
             $flight->update($request->validated());
-            return redirect()->route('flights.index')->with('message', 'Flight updated');
+            return redirect()->route('flights.index')->with('success', 'Flight updated');
         } catch (\Throwable $th) {
-            return back()->withError($th->getMessage())->withInput();
+            return back()->with('error', 'Data inserted incorrectly');
         }
     }
 
@@ -99,9 +93,9 @@ class FlightController extends Controller
                 abort(403);
             }
             $flight->deleteOrFail();
-            return redirect()->route('flights.index')->with('message', 'Flight deleted');
+            return redirect()->back()->with('success', 'Flight deleted');
         } catch (\Throwable $th) {
-            return back()->withError($th->getMessage())->withInput();
+            return back()->with('error', 'Flight was not found');
         }
     }
 }

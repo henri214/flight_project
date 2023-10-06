@@ -32,18 +32,22 @@ class Booking extends Model
     }
     public function scopeFilter($query, $filters)
     {
-        if (isset($filters['page_name'])) {
-            $query->where('page_name', $filters['page_name']);
+        if (isset($filters['pageName'])) {
+            $query->where('page_name', $filters['pageName']);
         }
         if (isset($filters['id'])) {
             $query->where('id', $filters['id']);
         }
-        if (isset($filters['user_email'])) {
-            $query->where('user_email', $filters['user_email']);
+        if (isset($filters['userEmail'])) {
+            $query->where('user_email', $filters['userEmail']);
         }
     }
-    public function scopeByFlight($query, $flight_id)
+    public function scopeByFlight($query, $flightId)
     {
-        return $query->where('flight_id', $flight_id);
+        return $query->where('flight_id', $flightId);
+    }
+    public function file()
+    {
+        return $this->hasOne(File::class);
     }
 }

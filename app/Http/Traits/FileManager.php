@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\File;
 
-
 trait FileManager
 {
     public function storeBookingPdf($booking)
@@ -19,14 +18,14 @@ trait FileManager
         $pdf = PDF::loadView('bookings.booking', $data);
         $dateTime = now();
         $extension = 'pdf';
-        $original_name = $dateTime->format('YmdHis') . '_booking';
-        $fileName = $original_name . '.' . $extension;
+        $originalName = $dateTime->format('YmdHis') . '_booking';
+        $fileName = $originalName . '.' . $extension;
         $directory = 'files';
         $path2 = '/' . $directory . '/' . $fileName;
         $pdf->save($path . $path2);
         return $pdf = [
-            'path' => $directory,
-            'original_name' => $original_name,
+            'path' => $path2,
+            'original_name' => $originalName,
             'hash_name' => Str::random(20),
             'extension' => $extension,
             'size' => $this->size(File::size($path . $path2)),
