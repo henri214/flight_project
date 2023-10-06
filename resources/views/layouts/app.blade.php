@@ -1,6 +1,6 @@
 @include('layouts.partials.header')
 
-<body style="height: auto; min-height: 100%;">
+<body class="sidebar-collapse">
     @include('layouts.partials.navbar')
     @include('layouts.partials.aside')
     @yield('styles')
@@ -28,7 +28,6 @@
         });
     </script>
     @stack('scripts')
-    {{-- @yield('stripeScripts') --}}
 </body>
 
 </html>
