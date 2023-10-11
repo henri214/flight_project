@@ -39,7 +39,7 @@ class BookingPolicy
      */
     public function create(User $user): bool
     {
-        if (auth()->user() !== null) {
+        if (auth()->user()->role_id === 1) {
             return true;
         }
         return false;

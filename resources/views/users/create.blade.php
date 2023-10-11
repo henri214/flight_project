@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+@props(['roles', 'pages', 'genders'])
     <x-form.form-header :item="'create user'">
         <form action="{{ route('users.store') }}" method="post" enctype="multipart/form-data">
             @csrf
@@ -20,4 +18,3 @@
             </div>
         </form>
     </x-form.form-header>
-@endsection

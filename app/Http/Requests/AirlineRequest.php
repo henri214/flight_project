@@ -22,7 +22,12 @@ class AirlineRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required|string',
+            'name' => 'required|string|unique:airlines,name',
         ];
     }
+
+    // public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    // {
+    //     dd($validator);
+    // }
 }

@@ -12,6 +12,7 @@ class Flight extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'name',
+        'country_to',
         'airline_id',
         'departure_time',
         'arrival_time',

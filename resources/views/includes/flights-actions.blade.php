@@ -1,0 +1,12 @@
+<x-form.form-action :item="$item" :value="$value" 
+data-name="{{ $value->name }}"
+data-country_to="{{ $value->country_to }}"
+data-departure_time="{{ $value->departure_time }}"
+data-arrival_time="{{ $value->arrival_time }}"
+data-airline_id="{{ $value->airline_id }}"
+data-price="{{ $value->price }}"
+data-pasangers="{{ $value->pasangers }}"
+data-is_available="{{ $value->is_available }}"
+data-two_way="{{ $value->two_way }}"
+data-two_way_departure_time="{{ $value->two_way_departure_time }}"
+data-two_way_arrival_time="{{ $value->two_way_arrival_time }}" />

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Flight;
-use App\Services\AdminUserService;
+use App\Models\Airline;
+use App\Services\FlightsDataService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -12,10 +13,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class HomeController extends Controller
 {
+    private $adminUserService;
+
+    //construct
+
     public function index(Request $request)
     {
-        $service = new AdminUserService();
-        return $service->getAll($request);
+        $service = new FlightsDataService();
+        return $service->getAllFlightsAdmin($request);
     }
     public function restore($flight)
     {

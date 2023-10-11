@@ -5,22 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Page;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Media;
 use App\Exports\UsersExport;
 use Illuminate\Http\Request;
 use App\Services\UserService;
-use App\Services\UserDataService;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
 
     public function index(Request $request)
     {
-        $service = new UserDataService();
+        $service = new UserService();
         return $service->getAll($request);
     }
     public function export()

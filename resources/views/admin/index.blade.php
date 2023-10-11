@@ -1,8 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    {{-- admin welcome page --}}
-    <x-button.create :item="'flight'"></x-button.create>
+    {{-- admin flights page --}}
+    @include('components.button.create', ['item' => 'flight'])
+    @include('flights.create', [
+        'airlines' => $airlines,
+        'availability' => $availability,
+        'twoWay' => $twoWay,
+    ])
     <div class="container mt-5">
         <h2 class="mb-4">Flights</h2>
         <table id="myFlightsTable" class="table table-bordered">
@@ -10,6 +15,7 @@
                 <tr>
                     <th>No</th>
                     <th>Name</th>
+                    <th>Country To</th>
                     <th>Departure Time</th>
                     <th>Arrival Time</th>
                     <th>Price</th>
@@ -24,62 +30,13 @@
             <tbody>
             </tbody>
         </table>
-    </div>
-    @push('scripts')
-        <script type="text/javascript">
-            $(function() {
-                var table = $('#myFlightsTable').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    ajax: "{{ route('admin.index') }}",
-                    columns: [{
-                            data: 'DT_RowIndex',
-                            name: 'DT_RowIndex'
-                        },
-                        {
-                            data: 'name',
-                            name: 'name'
-                        },
-                        {
-                            data: 'departure_time',
-                            name: 'departure_time'
-                        },
-                        {
-                            data: 'arrival_time',
-                            name: 'arrival_time'
-                        },
-                        {
-                            data: 'price',
-                            name: 'price'
-                        },
-                        {
-                            data: 'pasangers',
-                            name: 'pasangers'
-                        },
-                        {
-                            data: 'twoWay',
-                            name: 'twoWay'
-                        },
-                        {
-                            data: 'secondDepartureTime',
-                            name: 'secondDepartureTime'
-                        },
-                        {
-                            data: 'secondArrivalTime',
-                            name: 'secondArrivalTime'
-                        },
-                        {
-                            data: 'deleted_at',
-                            name: 'deleted_at'
-                        },
 
-                        {
-                            data: 'action',
-                            name: 'action'
-                        },
-                    ]
-                });
-            });
-        </script>
+
+    </div>
+    @include('flights.edit')
+    <div id="routeToAdminFlights" data-route="{{ route('admin.index') }}">
+
+    @push('scripts')
+        <script src="{{ asset('js/flightsDt.js') }}"></script>
     @endpush
 @endsection

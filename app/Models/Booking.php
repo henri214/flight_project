@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
+
 
 class Booking extends Model
 {
@@ -45,6 +47,13 @@ class Booking extends Model
     public function scopeByFlight($query, $flightId)
     {
         return $query->where('flight_id', $flightId);
+    }
+    public function scopeBookingsOfUser($query)
+    {
+        return $query->when(auth()->user()->role_id !== 1)
+            ->where('user_id', auth()->user()->id)
+            ->with('flight')
+            ->withTrashed();
     }
     public function file()
     {

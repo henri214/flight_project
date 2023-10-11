@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
 
 
 class UpdateUserRequest extends FormRequest
@@ -25,7 +25,13 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'username' => 'required|string|max:250',
-            'email' => 'required|email|max:250|unique:users',
+            'email' => ['required', 'email', 'max:250', Rule::unique('users', 'email')->ignore($this->route('user')->id)],
+
         ];
+    }
+
+    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        dd($validator->errors());
     }
 }

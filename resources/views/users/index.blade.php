@@ -1,8 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    
-     <x-button.create :item="'user'"></x-button.create>
+    @include('components.button.create', ['item' => 'user'])
+    @include('users.create', [
+        'roles' => $roles,
+        'pages' => $pages,
+        'genders' => $genders,
+    ])
 
 
     <div class="container mt-5">
@@ -15,6 +19,7 @@
                     <th>Email</th>
                     <th>Role Name</th>
                     <th>Phone</th>
+                    <th>Page id</th>
                     <th>Age</th>
                     <th>Gender</th>
                     <th>Deleted at</th>
@@ -25,52 +30,9 @@
             </tbody>
         </table>
     </div>
+    @include('users.edit')
+    <div id="routeToUsers" data-route="{{ route('users.index') }}"></div>
     @push('scripts')
-        <script type="text/javascript">
-            $(function() {
-                var table = $('#myUserTable').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    ajax: "{!! route('users.index') !!}",
-                    columns: [{
-                            data: 'DT_RowIndex',
-                            name: 'DT_RowIndex'
-                        },
-                        {
-                            data: 'username',
-                            name: 'username'
-                        },
-                        {
-                            data: 'email',
-                            name: 'email'
-                        },
-                        {
-                            data: 'role',
-                            name: 'role'
-                        },
-                        {
-                            data: 'phone',
-                            name: 'phone'
-                        },
-                        {
-                            data: 'age',
-                            name: 'age'
-                        },
-                        {
-                            data: 'gender',
-                            name: 'gender'
-                        },
-                        {
-                            data: 'deleted_at',
-                            name: 'deleted_at'
-                        },
-                        {
-                            data: 'action',
-                            name: 'action'
-                        },
-                    ]
-                });
-            });
-        </script>
+        <script src="{{ asset('js/users.js') }}"></script>
     @endpush
 @endsection

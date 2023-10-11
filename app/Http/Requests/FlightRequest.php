@@ -24,6 +24,7 @@ class FlightRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
+            'country_to' => 'required|string',
             'airline_id' => 'exists:airlines,id',
             'departure_time' => 'required|date',
             'arrival_time' => 'required|date',
@@ -35,4 +36,9 @@ class FlightRequest extends FormRequest
             'two_way_arrival_time' => 'required_if:two_way,true',
         ];
     }
+    
+    // public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    // {
+    //     dd($validator);
+    // }
 }

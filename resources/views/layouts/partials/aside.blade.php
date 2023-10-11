@@ -39,8 +39,10 @@
                     @can('viewAny', Auth::user())
                         <li class="nav-item">
                             <a href="{{ route('admin.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Flights
+                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                         </li>

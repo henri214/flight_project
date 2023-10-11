@@ -7,6 +7,7 @@
     <div class="content-wrapper">
         @yield('content')
     </div>
+    @include('layouts.partials.footer')
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>

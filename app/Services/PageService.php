@@ -24,7 +24,7 @@ class PageService implements DataTableInterface
             ->addIndexColumn()
             ->addColumn('action', function ($page) {
                 if ($page->deleted_at == null) {
-                    return view('components.form.form-action', ['item' => 'page', 'value' => $page]);
+                    return view('includes.pages-actions', ['item' => 'page', 'value' => $page]);
                 } else {
                     return view('components.form.form-restore', ['item' => 'page', 'value' => $page]);
                 }
@@ -34,6 +34,10 @@ class PageService implements DataTableInterface
             })
             ->addColumn('bookings', function ($page) {
                 return $page->bookings->count();
+            })
+            ->editColumn('deleted_at', function ($page) {
+                $deleted = $page->deleted_at;
+                return $deleted === null ? '---' : $deleted->diffForHumans();
             })
             ->rawColumns(['action', 'allUsers', 'bookings'])
             ->make(true);

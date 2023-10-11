@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('flights', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('country_to');
             $table->unsignedBigInteger('airline_id');
             $table->foreign('airline_id')->references('id')->on('airlines')->onDelete('cascade');
             $table->datetime('departure_time');

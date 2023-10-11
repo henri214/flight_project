@@ -24,8 +24,11 @@ class FlightFactory extends Factory
         $date3 = Carbon::parse($date)->addDays(rand(1, 60));
         $date4 = Carbon::parse($date3)->addHours(rand(1, 23));
         $two_way = $this->faker->boolean(20);
+        $countryFrom = fake()->country();
+        $countryTo = fake()->country();
         return [
-            'name' => fake()->country(),
+            'name' => $countryFrom,
+            'country_to' => ($countryTo !== $countryFrom) ? $countryTo : fake()->country(),
             'airline_id' => Airline::factory(),
             'departure_time' => $date,
             'arrival_time' => $date2,

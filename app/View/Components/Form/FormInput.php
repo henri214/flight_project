@@ -13,12 +13,14 @@ class FormInput extends Component
      */
     public $input = '';
     public $type = '';
+    public $id;
     public $min;
     public $max;
-    public function __construct($input, $type,$min='',$max='')
+    public function __construct($input, $type, $min = '', $max = '', $id = '')
     {
         $this->input = $input;
         $this->type = $type;
+        $this->id = $id;
         $this->min = $min;
         $this->max = $max;
     }

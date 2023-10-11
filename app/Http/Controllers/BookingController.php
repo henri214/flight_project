@@ -7,7 +7,6 @@ use App\Models\Page;
 use App\Models\User;
 use App\Models\Flight;
 use App\Models\Booking;
-use App\Services\BookingDataService;
 use Illuminate\Http\Request;
 use App\Services\BookingService;
 use Illuminate\Support\Facades\Auth;
@@ -17,13 +16,13 @@ class BookingController extends Controller
 {
     public function index(Request $request)
     {
-        $service = new BookingDataService();
+        $service = new BookingService();
         return $service->getAll($request);
     }
     public function restore($booking)
     {
         try {
-            Booking::withTrashed()->findOrFail($booking)->restore();
+            Booking::withTrashed()->find($booking)->restore();
             return redirect()->back()->with('success', 'Booking restored');
         } catch (\Throwable $th) {
             return back()->with('error', 'Data inserted incorrectly');
@@ -83,9 +82,10 @@ class BookingController extends Controller
     public function update(BookingRequest $request, Booking $booking)
     {
         try {
-            Booking::withTrashed()->findOrFail($booking)->restore();
+            $booking->update($request->validated());
             return redirect()->back()->with('success', 'Booking updated');
         } catch (\Throwable $th) {
+            dd($th);
             return back()->with('error', 'Data inserted incorrectly');
         }
     }

@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Airline extends Model
@@ -20,4 +22,8 @@ class Airline extends Model
     {
         return $this->hasMany(Flight::class);
     }
+    // public function setDeletedAtAttribute()
+    // {
+    //     return Carbon::createFromFormat('Y-m-d H:i:s', $this->deleted_at)->format('Y-m-d');
+    // }
 }

@@ -24,7 +24,7 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'username' => 'required|string|max:250',
-            'email' => 'required|email|max:250|unique:users',
+            'email' => 'required|email|max:250|unique:users,email',
             'password' => 'required|min:8|confirmed',
             'media' => 'file|mimes:png,jpg,svg,jpeg|max:2048',
             'birthday' => 'required|date',
@@ -33,8 +33,5 @@ class StoreUserRequest extends FormRequest
             'page_id' => 'exists:pages,id'
         ];
     }
-    // public function validator(Validator $validator)
-    // {
-    //     dd($validator);
-    // }
+
 }

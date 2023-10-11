@@ -28,10 +28,7 @@ class FlightController extends Controller
     public function create()
     {
         try {
-            $airlines = Airline::query()->pluck('name', 'id');
-            $availability = collect([1 => 'Yes', 0 => 'No']);
-            $twoWay = collect([1 => 'Yes', 0 => 'No']);
-            return view('flights.create', compact(['airlines', 'availability', 'twoWay']));
+            return view('flights.create');
         } catch (\Throwable $th) {
             return back()->with('error', 'Data inserted incorrectly');
         }
@@ -77,7 +74,7 @@ class FlightController extends Controller
                 abort(403);
             }
             $flight->update($request->validated());
-            return redirect()->route('flights.index')->with('success', 'Flight updated');
+            return redirect()->route('admin.index')->with('success', 'Flight updated');
         } catch (\Throwable $th) {
             return back()->with('error', 'Data inserted incorrectly');
         }

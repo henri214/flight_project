@@ -28,4 +28,8 @@ class BookingRequest extends FormRequest
             'page_id' => 'required|exists:pages,id',
         ];
     }
+    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        dd($validator);
+    }
 }

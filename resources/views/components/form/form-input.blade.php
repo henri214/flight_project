@@ -3,7 +3,7 @@
         class="col-md-4 col-form-label text-md-end text-start">{{ ucwords(Str::replace('_', ' ', $input)) }}</label>
     <div class="col-md-6">
         <input type="{{ $type }}" class="form-control @error('{{ $input }}') is-invalid @enderror"
-            min="{{ $min }}" max="{{ $max }}" id="{{ $input }}" name="{{ $input }}"
+            min="{{ $min }}" max="{{ $max }}" id="{{ $id }}" name="{{ $input }}"
             value="{{ old($input) }}">
         @if ($errors->has($input))
             <span class="text-danger">{{ $errors->first($input) }}</span>
